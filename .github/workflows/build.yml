@@ -65,4 +65,4 @@ jobs:
         platforms: ${{ inputs.platform }}
         context: .
         push: true
-        tags: loremdonecipsum/night-sky-app:${{ inputs.architecture }}-alpha
+        tags: loremdonecipsum/night-sky-photo:${{ inputs.architecture }}-alpha
