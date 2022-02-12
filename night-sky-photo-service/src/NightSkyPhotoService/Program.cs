@@ -42,13 +42,20 @@ builder.Services.AddCors(options =>
 builder.Services.AddSignalR();
 builder.Services.AddControllers();
 
-builder.Services.AddHttpClient("RemotePhotographer", c => c.BaseAddress = new Uri("http://remote-photographer-service:8080/graphql/"));
 builder.Services.AddHttpClient("PhotoGalleryService", c => c.BaseAddress = new Uri("http://photo-gallery-service:8080/graphql/"));
 
-builder.Services.AddGraphQLServer()
-    .AddRemoteSchema("RemotePhotographer")
-    .AddRemoteSchema("PhotoGalleryService")
+var graphqlServer = builder.Services.AddGraphQLServer()
     .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true);
+
+foreach(var entry in builder.Configuration.GetSection("graphql.remote.schemas").GetChildren()) {
+
+    builder.Services.AddHttpClient(
+        entry.GetValue<string>("name"), 
+        c => c.BaseAddress = new Uri(entry.GetValue<string>("url"))
+    );
+
+    graphqlServer.AddRemoteSchema(entry.GetValue<string>("name"));
+}
 
 builder.Services.AddMassTransit(x =>
 {
