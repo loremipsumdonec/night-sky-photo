@@ -1,0 +1,88 @@
+name: publish
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - "src/night-sky-photo-service/src/NightSkyPhotoService/**.*"
+      - "src/night-sky-photo-service/src/Boilerplate/**.*"
+jobs:
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: night-sky-photo-app
+
+    steps:
+    - uses: actions/checkout@v2
+      name: checkout
+
+    - name: setup node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16
+
+    - name: install
+      run: npm install
+
+    - name: build frontend
+      run: npm run build
+
+    - name: upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: frontend
+        path: night-sky-photo-app/build/
+
+  linux_arm:
+    needs: [frontend]
+    uses: loremipsumdonec/night-sky-photo/.github/workflows/build.yml@master
+    with:
+      configuration: Release
+      architecture: arm
+      platform: linux/arm
+    secrets:
+      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub_password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  linux_arm64:
+    needs: [frontend]
+    uses: loremipsumdonec/night-sky-photo/.github/workflows/build.yml@master
+    with:
+      configuration: Release
+      architecture: arm64
+      platform: linux/arm64
+    secrets:
+      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub_password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  linux_x64:
+    needs: [frontend]
+    uses: loremipsumdonec/night-sky-photo/.github/workflows/build.yml@master
+    with:
+      configuration: Release
+      architecture: x64
+      platform: linux/amd64
+    secrets:
+      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub_password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  manifest:
+    needs: [linux_arm, linux_arm64, linux_x64]
+    runs-on: ubuntu-latest
+
+    steps: 
+
+    - name: login to docker hub
+      uses: docker/login-action@v1 
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: build manifest
+      run: | 
+        docker manifest create loremdonecipsum/night-sky-photo:alpha --amend loremdonecipsum/night-sky-photo:x64-alpha --amend loremdonecipsum/night-sky-photo:arm64-alpha --amend loremdonecipsum/night-sky-photo:arm-alpha
+        docker manifest push loremdonecipsum/night-sky-photo:alpha

@@ -1,0 +1,1 @@
+export { NightSkyPhoto } from './NightSkyPhoto';

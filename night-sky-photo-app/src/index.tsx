@@ -1,12 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import { EventStreamProvider } from 'features/events/components';
+import { GraphQLProvider } from './features/apollo/components/GraphQLProvider'; 
+import { NightSkyPhoto } from './features/application/components/NightSkyPhoto';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <small>You are running this application in <b>{process.env.NODE_ENV}</b> mode. api url =<b>{process.env.REACT_APP_GRAPHQL_API_URL}</b></small>
+    <EventStreamProvider url={process.env.REACT_APP_EVENT_STREAM_URL!}>
+      <GraphQLProvider apiUrl={process.env.REACT_APP_GRAPHQL_API_URL!} wsApiUrl={process.env.REACT_APP_GRAPHQL_WS_API_URL!}>
+        <NightSkyPhoto/>
+      </GraphQLProvider>
+    </EventStreamProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
