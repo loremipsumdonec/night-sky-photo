@@ -1,4 +1,3 @@
-import react from 'react';
 
 interface ImageFormat {
     imageFormatId:string,

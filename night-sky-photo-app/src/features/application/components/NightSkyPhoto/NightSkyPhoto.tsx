@@ -10,11 +10,6 @@ import {
 } from '../../../photographer/components'
 
 import {
-    Lightboard, 
-    Images, 
-} from '../../../gallery/components'
-
-import {
     Console 
 } from '../../../events/components'
 

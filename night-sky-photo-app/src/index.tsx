@@ -10,7 +10,7 @@ ReactDOM.render(
   <React.StrictMode>
     <small>You are running this application in <b>{process.env.NODE_ENV}</b> mode. api url =<b>{process.env.REACT_APP_GRAPHQL_API_URL}</b></small>
     <EventStreamProvider url={process.env.REACT_APP_EVENT_STREAM_URL!}>
-      <GraphQLProvider apiUrl={process.env.REACT_APP_GRAPHQL_API_URL!} wsApiUrl={process.env.REACT_APP_GRAPHQL_WS_API_URL!}>
+      <GraphQLProvider apiUrl={process.env.REACT_APP_GRAPHQL_API_URL!}>
         <NightSkyPhoto/>
       </GraphQLProvider>
     </EventStreamProvider>
