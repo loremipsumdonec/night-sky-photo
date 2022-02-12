@@ -26,7 +26,6 @@ builder.Host.ConfigureContainer((ContainerBuilder containerBuilder) =>
     containerBuilder.RegisterModule(new MapperModule(builder.Configuration, assemblies));
     containerBuilder.RegisterModule(new ReactiveModule(builder.Configuration, assemblies));
     containerBuilder.RegisterModule(new MassTransitModule(builder.Configuration, assemblies));
-    containerBuilder.RegisterModule(new TemplatesModule(builder.Configuration));
 });
 
 builder.Services.AddCors(options =>

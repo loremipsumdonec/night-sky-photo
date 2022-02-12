@@ -6,6 +6,7 @@
 		<RootNamespace>NightSkyPhotoService</RootNamespace>
 	</PropertyGroup>
 
+	<PropertyGroup Condition=" '$(RunConfiguration)' == 'NightSkyPhotoService_template' " />
 	<ItemGroup>
 	  <Compile Remove="Features\Reactive\**" />
 	  <Content Remove="Features\Reactive\**" />
@@ -35,7 +36,6 @@
 
 	<ItemGroup>
 		<Folder Include="Features\RemotePhotographer\Queries\" />
-		<Folder Include="Features\Templates\Commands\" />
 	</ItemGroup>
 
 </Project>
