@@ -1,4 +1,3 @@
-using NightSkyPhotoService.Features.Templates;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Boilerplate.Features.Core;
@@ -40,8 +39,6 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddSignalR();
 builder.Services.AddControllers();
-
-builder.Services.AddHttpClient("PhotoGalleryService", c => c.BaseAddress = new Uri("http://photo-gallery-service:8080/graphql/"));
 
 var graphqlServer = builder.Services.AddGraphQLServer()
     .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true);
