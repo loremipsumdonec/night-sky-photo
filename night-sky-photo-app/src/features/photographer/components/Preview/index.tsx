@@ -14,9 +14,9 @@ export const Preview: React.FC = () => {
     useEffect(() => {
 
         const subscription = subject.pipe(
-            filter(ev => ev.type === 'PreviewImageCaptured' && (ev as any).tags?.indexOf('preview') > -1)
+            filter(ev => ev.type === 'PreviewImageCaptured')
           ).subscribe(ev => {
-            setImage((ev as any).data)
+            setImage((ev as any).data);
           });
 
           return () => subscription.unsubscribe();

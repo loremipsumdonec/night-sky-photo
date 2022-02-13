@@ -22,7 +22,6 @@ export const NightSkyPhoto: React.FC<Props> = () => {
                 <Capture/>
                 <Preview/>
             </Camera>
-            <Console/>
         </div>
     )
 }
