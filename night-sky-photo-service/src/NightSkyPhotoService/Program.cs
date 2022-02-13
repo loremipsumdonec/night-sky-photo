@@ -101,9 +101,9 @@ builder.Services.AddMassTransit(x =>
 builder.Services.AddGenericRequestClient();
 
 var app = builder.Build();
+app.UseFileServer();
 app.UseRouting();
 app.UseCors("DefaultPolicy");
-app.UseStaticFiles();
 
 app.UseEndpoints(endpoints =>
 {
