@@ -3,10 +3,7 @@ import {
     Camera, 
     Capture, 
     Preview,
-    Select,
-    SelectStorage,
-    SelectImageFormat,
-    SelectISO
+    Select
 } from '../../../photographer/components'
 
 import {
@@ -22,9 +19,6 @@ export const NightSkyPhoto: React.FC<Props> = () => {
         <div>
             <Camera>
                 <Select/>
-                <SelectStorage/>
-                <SelectImageFormat />
-                <SelectISO/>
                 <Capture/>
                 <Preview/>
             </Camera>
