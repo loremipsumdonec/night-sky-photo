@@ -6,10 +6,6 @@ import {
     Select
 } from '../../../photographer/components'
 
-import {
-    Console 
-} from '../../../events/components'
-
 interface Props {
 }
 
