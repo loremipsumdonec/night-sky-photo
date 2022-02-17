@@ -16,7 +16,7 @@ export const Preview: React.FC = () => {
         const subscription = subject.pipe(
             filter(ev => ev.type === 'PreviewImageCaptured')
           ).subscribe(ev => {
-            setImage((ev as any).data);
+            setImage((ev as any).data.value.result);
           });
 
           return () => subscription.unsubscribe();

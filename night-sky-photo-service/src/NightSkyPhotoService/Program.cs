@@ -11,6 +11,7 @@ using MassTransit.MongoDbIntegration.MessageData;
 using Boilerplate.Features.MassTransit;
 using PhotoGalleryService.Features.Gallery.Events;
 using NightSkyPhotoService.Features.SignalR.Hubs;
+using MassTransit.MessageData;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
@@ -25,6 +26,13 @@ builder.Host.ConfigureContainer((ContainerBuilder containerBuilder) =>
     containerBuilder.RegisterModule(new MapperModule(builder.Configuration, assemblies));
     containerBuilder.RegisterModule(new ReactiveModule(builder.Configuration, assemblies));
     containerBuilder.RegisterModule(new MassTransitModule(builder.Configuration, assemblies));
+
+    containerBuilder.RegisterInstance<IMessageDataRepository>(
+        new MongoDbMessageDataRepository(
+                builder.Configuration.GetValue<string>("message.broker-service:parameters:data.repository.connectionString"),
+                builder.Configuration.GetValue<string>("message.broker-service:parameters:data.repository.database")
+            )
+    ).SingleInstance();
 });
 
 builder.Services.AddCors(options =>
@@ -72,10 +80,7 @@ builder.Services.AddMassTransit(x =>
         configuration.UseJsonSerializer();
 
         configuration.UseMessageData(
-            new MongoDbMessageDataRepository(
-                builder.Configuration.GetValue<string>("message.broker-service:parameters:data.repository.connectionString"),
-                builder.Configuration.GetValue<string>("message.broker-service:parameters:data.repository.database")
-            )
+            context.GetRequiredService<IMessageDataRepository>()
         );
 
         configuration.UseTimeout(c => c.Timeout = TimeSpan.FromSeconds(120));
